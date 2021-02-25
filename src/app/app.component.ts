@@ -17,16 +17,28 @@ import esriConfig from '@arcgis/core/config.js';
 import { environment } from 'src/environments/environment';
 
 import {MatSidenav} from '@angular/material/sidenav';
+import {ThemePalette} from '@angular/material/core';
+
+export interface Task {
+  name: string;
+  completed: boolean;
+  color: ThemePalette;
+  url:string,
+  capa: FeatureLayer;
+  subtasks?: Task[];
+}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
+
 export class AppComponent implements OnInit, OnDestroy {
 
   
   private view: any = null;
+  public map: Map;
 
 
   @ViewChild('sidenav') sidenav: MatSidenav;
@@ -42,7 +54,7 @@ export class AppComponent implements OnInit, OnDestroy {
     
     const container = this.mapViewEl.nativeElement;
 
-    const map = new Map({
+    this.map = new Map({
       basemap: "satellite",
     });
 
@@ -55,7 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const view = new MapView({
       container,
      // map: webmap,
-      map, 
+      map:this.map, 
       center: [-75.992506, -10.258561],
       zoom: 8
     });
@@ -77,7 +89,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Add layers geoportal
     const url = "https://services6.arcgis.com/c9GFTG11debu0wsH/arcgis/rest/services/Inventario_de_Glaciares_a%C3%B1o_2018/FeatureServer/0";
-    map.add(this.cargarCapaGeneral(url))
+    this.map.add(this.cargarCapaGeneral(url))
 
     // bonus - how many bookmarks in the webmap?
     webmap.when(() => {
@@ -137,6 +149,65 @@ export class AppComponent implements OnInit, OnDestroy {
   close(reason: string) {
     this.reason = reason;
     this.sidenav.close();
+  }
+
+  //Funciones de los Checkboks
+
+
+  task: Task = {
+    name: 'Indeterminate',
+    completed: false,
+    color: 'primary',
+    url: "asda",
+    capa: null,
+    subtasks: [
+      {name: 'Primary', completed: false, color: 'primary', url: "https://services6.arcgis.com/c9GFTG11debu0wsH/arcgis/rest/services/Peligro_por_aluvion_en_la_subcuenca_Quillcay_parte_baja/FeatureServer/0", capa: null},
+      {name: 'Accent', completed: false, color: 'accent', url: "asda", capa: null},
+      {name: 'Warn', completed: false, color: 'warn', url: "asda", capa: null},
+      {name: 'Placent', completed: true, color: 'warn', url: "asda", capa: null}
+    ]
+  };
+
+  allComplete: boolean = false;
+
+
+   updateAllComplete = async()=>{
+     
+     //const temp = await this.cargarCapaGeneral(t.url);
+     this.task.subtasks.every(t=>{
+       
+       if(t.completed){
+          t.capa = new FeatureLayer({
+            url: t.url
+          });
+         console.log(t.capa);
+         this.map.add(t.capa);
+         //console.log(t.capa);
+         console.log("Cargo la capa");
+        }else{
+          console.log("Remuevo la capa");
+           this.map.remove(t.capa)
+        }
+        
+      })
+      this.allComplete = this.task.subtasks != null && this.task.subtasks.every(t => {t.completed});
+
+    return this.allComplete;
+  }
+
+  someComplete(): boolean {
+    if (this.task.subtasks == null) {
+      return false;
+    }
+    return this.task.subtasks.filter(t => t.completed).length > 0 && !this.allComplete;
+  }
+
+  setAll(completed: boolean) {
+    this.allComplete = completed;
+    if (this.task.subtasks == null) {
+      return;
+    }
+    this.task.subtasks.forEach(t => t.completed = completed);
   }
 
 }

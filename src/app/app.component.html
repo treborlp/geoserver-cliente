@@ -1,32 +1,114 @@
-<mat-sidenav-container class="example-container" (backdropClick)="close('backdrop')">
-    <mat-sidenav #sidenav (keydown.escape)="close('escape')" disableClose>
-        <p><button mat-button (click)="close('toggle button')">Toggle</button></p>
-    </mat-sidenav>
+<div class="example-container">
+    <mat-toolbar color="primary" class="example-toolbar">
+        <button mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
+          <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+      </button>
 
-    <mat-sidenav-content>
-        <!--Inicio del tolbar-->
-        <mat-toolbar color="primary">
-            <button mat-icon-button class="example-icon" (click)="sidenav.open()" aria-label="Example icon-button with menu icon">
-          <mat-icon>menu</mat-icon>
-        </button>
-            <span>My App</span>
-            <span class="example-spacer"></span>
-            <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-          <mat-icon>favorite</mat-icon>
-        </button>
-            <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-          <mat-icon>share</mat-icon>
-        </button>
-        </mat-toolbar>
+        <h1 class="example-app-name">Geoportal</h1>
 
-        <!-- Inicio del Map Div -->
-        <div #mapViewNode></div>
+        <span class="example-spacer"></span>
 
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+      </button>
 
-        <p>Closed due to: {{reason}}</p>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="/perfil">
+              <mat-icon>account_box</mat-icon>
+              <span>Mi Perfil</span>
+          </button>
+            <button mat-menu-item (click)="sidenav.opened = false">
+              <mat-icon>exit_to_app</mat-icon>
+              <span>Cerrar Sesión</span>
+          </button>
+        </mat-menu>
+    </mat-toolbar>
 
+    <mat-sidenav-container class="example-sidenav-container">
+        <mat-sidenav #sidenav style="width: 200px" mode="over">
+            <img src="assets/logo.png" width="128" style="margin-left: 20px">
+
+            <button mat-menu-item (click)="sidenav.toggle()" routerLink="/buscar" style="cursor: pointer">
+              <mat-icon>search</mat-icon>
+              <span>Buscar</span>
+          </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="sidenav.toggle()" routerLink="/consulta" style="cursor: pointer">
+              <mat-icon>insert_drive_file</mat-icon>
+              <span>Registrar</span>
+          </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="sidenav.toggle()" routerLink="/consulta-especial" style="cursor: pointer">
+              <mat-icon>insert_drive_file</mat-icon>
+              <span>Registrar E.</span>
+          </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="sidenav.toggle()" routerLink="/consulta-wizard" style="cursor: pointer">
+              <mat-icon>view_carousel</mat-icon>
+              <span>Registrar W.</span>
+          </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="sidenav.toggle()" routerLink="/especialidad" style="cursor: pointer">
+              <mat-icon>star_rate</mat-icon>
+              <span>Especialidades</span>
+          </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="sidenav.toggle()" routerLink="/medico" style="cursor: pointer">
+              <mat-icon>healing</mat-icon>
+              <span>Capas Riesgo</span>
+          </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="sidenav.toggle()" routerLink="/examen" style="cursor: pointer">
+              <mat-icon>assignment</mat-icon>
+              <span>Capas de Retroceso</span>
+          </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="sidenav.toggle()" routerLink="/paciente" style="cursor: pointer">
+              <mat-icon>accessibility</mat-icon>
+              <span>Capas Ecosistemas</span>
+          </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="sidenav.toggle()" routerLink="/reporte" style="cursor: pointer">
+              <mat-icon>assessment</mat-icon>
+              <span>Reportes</span>
+          </button>
+            <mat-divider></mat-divider>
+
+            <section class="example-section">
+                <span class="example-list-section">
+                <mat-checkbox class="example-margin"
+                              [checked]="allComplete"
+                              [color]="task.color"
+                              [indeterminate]="someComplete()"
+                              (change)="setAll($event.checked)">
+                  {{task.name}}
+                </mat-checkbox>
+              </span>
+                <span class="example-list-section">
+                <ul>
+                  <li *ngFor="let subtask of task.subtasks">
+                    <mat-checkbox [(ngModel)]="subtask.completed"
+                                  [color]="subtask.color"
+                                  (ngModelChange)="updateAllComplete()">
+                      {{subtask.name}}
+                    </mat-checkbox>
+                  </li>
+                </ul>
+              </span>
+            </section>
+
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <!--<router-outlet></router-outlet>-->
+
+            <div #mapViewNode></div>
+        </mat-sidenav-content>
+
+    </mat-sidenav-container>
+
+</div>
 
 <style>
      :host {

@@ -13,9 +13,32 @@
 }
 
 .example-container {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
+}
+
+.example-sidenav-container {
+    flex: 1;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.example-section {
+    margin: 12px 0;
+}
+
+.example-margin {
+    margin: 0 12px;
+}
+
+ul {
+    list-style-type: none;
+    margin-top: 4px;
 }
