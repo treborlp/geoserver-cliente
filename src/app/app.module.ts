@@ -10,14 +10,15 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { AppComponent } from './app.component';
-import { SidebarComponent } from './test/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { VisorComponent } from './pages/visor/visor.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SidebarComponent
+    VisorComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,7 +30,8 @@ import { FormsModule } from '@angular/forms';
     MatSidenavModule,
     MatDividerModule,
     MatMenuModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
