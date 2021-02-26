@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
   allComplete: boolean = false;
 
 
-   updateAllComplete = async()=>{
+   updateAllComplete(){
      
      //const temp = await this.cargarCapaGeneral(t.url);
      this.task.subtasks.every(t=>{

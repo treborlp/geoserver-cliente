@@ -26,6 +26,7 @@ export class VisorComponent implements OnInit, OnDestroy {
 
   private view: any = null;
   private map: Map;
+  private webMap: WebMap;
 
   // The <div> where we will place the map
   @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
@@ -42,7 +43,7 @@ export class VisorComponent implements OnInit, OnDestroy {
       basemap: "satellite",
     });
 
-    const webmap = new WebMap({
+  const webmap = new WebMap({
       portalItem: {
         id: 'aa1d3f80270146208328cf66d022e09c',
       },
@@ -53,7 +54,7 @@ export class VisorComponent implements OnInit, OnDestroy {
      // map: webmap,
       map:this.map, 
       center: [-75.992506, -10.258561],
-      zoom: 8
+      zoom: 8,
     });
 
     const bookmarks = new Bookmarks({
@@ -113,6 +114,10 @@ export class VisorComponent implements OnInit, OnDestroy {
       })
 
       this.map.add(capaRecibida);
+      this.view.zoom = 12;
+      this.view.center = [-77.524570, -9.530104];
+
+     
       console.log("Capa recibida");
 
     })
